@@ -1,0 +1,34 @@
+{
+    
+    "dataRoles": [
+      {
+        "name": "values",
+        "kind": "Grouping",
+        "displayName": "Values"
+      }
+    ],
+    "dataViewMappings": [
+      {
+        "table": {
+          "rows": {
+            "select": [
+              { "for": { "in": "values" } }
+            ]
+          }
+        }
+      }
+    ],
+    "objects": {
+      "general": {
+        "displayName": "General",
+        "properties": {
+          "fill": {
+            "displayName": "Fill",
+            "type": { "fill": { "solid": { "color": true } } }
+          }
+        }
+      }
+    },
+    "privileges" : []
+  }
+  
