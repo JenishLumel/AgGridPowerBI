@@ -86,7 +86,7 @@ export class Visual implements IVisual {
 
         this.settings = VisualSettings.parse<VisualSettings>(dataView);
         this.theme = this.settings.settings.theme;
-        // this.selectionManager=this.host.createSelectionManager();
+        
         button.onclick = () => this.onChangeThemeButtonClick(this.rowData,this.columnData,options,dataView,onRowClick);
         const onRowClick = (rowIndex: any) => {
            
@@ -105,21 +105,22 @@ export class Visual implements IVisual {
 
     private onChangeThemeButtonClick(data,columnss,options,dataView,onRowClick) {
         const newTheme= this.theme === "alpine" ? "material-dark" : "alpine" 
-        const event = new CustomEvent("selectObject", {
-            detail: {
-                objectName: "settings",
-                properties: {
-                    ['theme']: newTheme
-                },
-                selector: null
-            }
-        });
-        this.target.dispatchEvent(event);
+    
+       
+            const persistedObjects = {
+                merge: [{
+                    objectName: 'settings',
+                    properties: {
+                        theme: newTheme
+                    },
+                    selector: null
+                }]
+            };
+        this.host.persistProperties(persistedObjects);
+        
         
         this.settings = VisualSettings.parse<VisualSettings>(dataView);
         this.theme = this.settings.settings.theme;
-
-        this.theme=newTheme
 
         Component3(this.target,data,columnss,this.theme,this.scale,onRowClick)
     }
