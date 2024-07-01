@@ -57,10 +57,9 @@ const Component = (element) => {
 
 
 
-const Component3 = (element, tableData, columnDefs) => {
-    //ReactDOM.render(<TableVisual3 data={tableData} columnDefs={columnDefs}/>, element);
-    react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TableVisual2__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A, { data: tableData, columnDefs: columnDefs }), element);
-    //ReactDOM.render(<App />, element);
+const Component3 = (element, tableData, columnDefs, themeVisual, scale, onRowClick) => {
+    // ReactDOM.render(<TableVisual data={tableData} columnDefs={columnDefs}  onRowClick={onRowClick}/>, element);
+    react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TableVisual2__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A, { themeBack: themeVisual, data: tableData, columnDefs: columnDefs, scale: scale }), element);
 };
 
 
@@ -82,20 +81,147 @@ const Component3 = (element, tableData, columnDefs) => {
 
 
 
-const TableVisual2 = ({ data, columnDefs }) => {
-    console.log(columnDefs);
-    console.log(data);
+
+
+const TableVisual2 = ({ data, columnDefs, themeBack, scale }) => {
+    const format = "currency";
     const [column, setColumn] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(columnDefs);
     const [rowData, setRowData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(data);
+    const [theme, setTheme] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(themeBack);
+    const [scaling, setScale] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(scale);
+    const [formatt, setFormat] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(format);
+    const valueFormatter = (params) => {
+        const value = params.value;
+        if (typeof value !== "number")
+            return value;
+        switch (scaling) {
+            case "thousands":
+                return (value / 1000).toFixed(2) + "K";
+            case "millions":
+                return (value / 1000000).toFixed(2) + "M";
+            case "billions":
+                return (value / 1000000000).toFixed(2) + "B";
+            default:
+                return value;
+        }
+    };
     react__WEBPACK_IMPORTED_MODULE_0__.useEffect(() => {
+        const updatedColumnDefs = columnDefs.map(colDef => ({
+            ...colDef,
+            valueFormatter
+        }));
         setRowData(data);
-        setColumn(columnDefs);
-    }, [columnDefs]);
+        setColumn(updatedColumnDefs);
+        setTheme(themeBack);
+    }, [columnDefs, themeBack, scaling, formatt]);
     return (react__WEBPACK_IMPORTED_MODULE_0__.createElement(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null,
-        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: "ag-theme-alpine", style: { height: "100%", width: "100%" } },
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", { onChange: (e) => setScale(e.target.value), value: scaling },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "none" }, "None"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "thousands" }, "Thousands"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "millions" }, "Millions"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "billions" }, "Billions")),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", { onChange: (e) => setFormat(e.target.value), value: formatt },
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "none" }, "None"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "currency" }, "Currency"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "percentage" }, "Percentage"),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "decimal" }, "Decimal")),
+        react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: `ag-theme-${theme}`, style: { height: "100%", width: "100%" } },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(ag_grid_react__WEBPACK_IMPORTED_MODULE_1__/* .AgGridReact */ .W6, { rowData: rowData, columnDefs: column, animateRows: true }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TableVisual2);
+
+
+/***/ }),
+
+/***/ 587:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Mb: () => (/* binding */ VisualSettings)
+/* harmony export */ });
+/* unused harmony exports VisualFormattingSettingsModel, Settings */
+/* harmony import */ var powerbi_visuals_utils_dataviewutils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(116);
+/* harmony import */ var powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(674);
+/*
+ *  Power BI Visualizations
+ *
+ *  Copyright (c) Microsoft Corporation
+ *  All rights reserved.
+ *  MIT License
+ *
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the ""Software""), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ *
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ *
+ *  THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ */
+
+
+
+var FormattingSettingsCard = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.SimpleCard */ .z.Tn;
+var FormattingSettingsModel = powerbi_visuals_utils_formattingmodel__WEBPACK_IMPORTED_MODULE_0__/* .formattingSettings.Model */ .z.Kx;
+/**
+ * Data Point Formatting Card
+ */
+class DataPointCardSettings extends (/* unused pure expression or super */ null && (FormattingSettingsCard)) {
+    defaultColor = new formattingSettings.ColorPicker({
+        name: "defaultColor",
+        displayName: "Default color",
+        value: { value: "" }
+    });
+    showAllDataPoints = new formattingSettings.ToggleSwitch({
+        name: "showAllDataPoints",
+        displayName: "Show all",
+        value: true
+    });
+    fill = new formattingSettings.ColorPicker({
+        name: "fill",
+        displayName: "Fill",
+        value: { value: "" }
+    });
+    fillRule = new formattingSettings.ColorPicker({
+        name: "fillRule",
+        displayName: "Color saturation",
+        value: { value: "" }
+    });
+    fontSize = new formattingSettings.NumUpDown({
+        name: "fontSize",
+        displayName: "Text Size",
+        value: 12
+    });
+    name = "dataPoint";
+    displayName = "Data colors";
+    slices = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize];
+}
+/**
+* visual settings model class
+*
+*/
+class VisualFormattingSettingsModel extends (/* unused pure expression or super */ null && (FormattingSettingsModel)) {
+    // Create formatting settings model formatting cards
+    dataPointCard = new DataPointCardSettings();
+    cards = [this.dataPointCard];
+}
+class VisualSettings extends powerbi_visuals_utils_dataviewutils__WEBPACK_IMPORTED_MODULE_1__/* .DataViewObjectsParser */ .P {
+    settings = new Settings();
+}
+class Settings {
+    theme = "alpine";
+    scale = "thousands";
+    format = "none";
+}
 
 
 /***/ }),
@@ -108,47 +234,837 @@ const TableVisual2 = ({ data, columnDefs }) => {
 /* harmony export */ });
 /* harmony import */ var _Component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(633);
 /* harmony import */ var _Component3__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(318);
+/* harmony import */ var _settings__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(587);
+
 
 
 
 
 class Visual {
     target;
+    settings;
+    theme;
+    scale;
+    format;
+    rowData;
+    columnData;
+    host;
+    selectionManager;
     constructor(options) {
         this.target = options.element;
+        this.settings = new _settings__WEBPACK_IMPORTED_MODULE_2__/* .VisualSettings */ .Mb();
+        this.theme = this.settings.settings.theme;
+        this.scale = this.settings.settings.scale;
+        this.format = this.settings.settings.scale;
+        // this.selectionManager=this.host.createSelectionManager();
         (0,_Component__WEBPACK_IMPORTED_MODULE_0__/* .Component */ .u)(options.element);
     }
     update(options) {
+        const button = document.createElement("button");
+        button.innerText = "Change Theme";
+        button.id = "changeThemeButton";
+        this.target.appendChild(button);
         const dataViews = options.dataViews;
         if (!dataViews || dataViews.length === 0)
             return;
         const dataView = dataViews[0];
-        const tableData = dataView.table.rows.map(row => {
+        const columnss = dataView.table.columns.map(col => {
             const obj = {};
-            row.forEach((val, idx) => {
-                obj["field0"] = val;
-            });
+            obj['field'] = col.displayName;
             return obj;
         });
-        const columnDefs = dataView.table.columns.map((col, index) => ({
-            headerName: col.displayName, field: "field".concat(String(index))
-        }));
-        (0,_Component3__WEBPACK_IMPORTED_MODULE_1__/* .Component3 */ .j)(this.target, tableData, columnDefs);
-    }
-    transformData(dataView) {
-        const table = dataView.table;
-        if (!table || !table.rows || table.rows.length === 0)
-            return [];
-        return table.rows.map(row => {
-            const transformedRow = {};
-            table.columns.forEach((col, index) => {
-                transformedRow[col.queryName] = row[index];
-            });
-            return transformedRow;
+        const data = dataView.table.rows.map(row => {
+            const obj = {};
+            for (let i = 0; i < row.length; i++) {
+                obj[`${dataView.table.columns[i].displayName}`] = row[i];
+            }
+            return obj;
         });
+        console.log(columnss);
+        console.log(data);
+        this.columnData = columnss;
+        this.rowData = data;
+        this.settings = _settings__WEBPACK_IMPORTED_MODULE_2__/* .VisualSettings */ .Mb.parse(dataView);
+        this.theme = this.settings.settings.theme;
+        // this.selectionManager=this.host.createSelectionManager();
+        button.onclick = () => this.onChangeThemeButtonClick(this.rowData, this.columnData, options, dataView, onRowClick);
+        const onRowClick = (rowIndex) => {
+            const selection = this.host.createSelectionIdBuilder()
+                .withTable(dataView.table, rowIndex)
+                .createSelectionId();
+            this.selectionManager.select(selection);
+        };
+        (0,_Component3__WEBPACK_IMPORTED_MODULE_1__/* .Component3 */ .j)(this.target, this.rowData, this.columnData, this.theme, this.scale, onRowClick);
+    }
+    onChangeThemeButtonClick(data, columnss, options, dataView, onRowClick) {
+        const newTheme = this.theme === "alpine" ? "material-dark" : "alpine";
+        const event = new CustomEvent("selectObject", {
+            detail: {
+                objectName: "settings",
+                properties: {
+                    ['theme']: newTheme
+                },
+                selector: null
+            }
+        });
+        this.target.dispatchEvent(event);
+        this.settings = _settings__WEBPACK_IMPORTED_MODULE_2__/* .VisualSettings */ .Mb.parse(dataView);
+        this.theme = this.settings.settings.theme;
+        this.theme = newTheme;
+        (0,_Component3__WEBPACK_IMPORTED_MODULE_1__/* .Component3 */ .j)(this.target, data, columnss, this.theme, this.scale, onRowClick);
+    }
+    getFormattingModel() {
+        return {
+            dataViewMappings: [],
+            objects: {
+                general: {
+                    displayName: "General",
+                    properties: {
+                        theme: this.settings.theme,
+                        scale: this.settings.scale,
+                        format: this.settings.format
+                    }
+                }
+            }
+        };
     }
 }
 
+
+/***/ }),
+
+/***/ 888:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   _: () => (/* binding */ getValue)
+/* harmony export */ });
+/* unused harmony export getFillColorByPropertyName */
+function getValue(object, propertyName, defaultValue) {
+    if (!object) {
+        return defaultValue;
+    }
+    const propertyValue = object[propertyName];
+    if (propertyValue === undefined) {
+        return defaultValue;
+    }
+    return propertyValue;
+}
+/** Gets the solid color from a fill property using only a propertyName */
+function getFillColorByPropertyName(object, propertyName, defaultColor) {
+    const value = getValue(object, propertyName);
+    if (!value || !value.solid) {
+        return defaultColor;
+    }
+    return value.solid.color;
+}
+//# sourceMappingURL=dataViewObject.js.map
+
+/***/ }),
+
+/***/ 271:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Bl: () => (/* binding */ getCommonValue)
+/* harmony export */ });
+/* unused harmony exports getValue, getObject, getFillColor */
+/* harmony import */ var _dataViewObject__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(888);
+
+/** Gets the value of the given object/property pair. */
+function getValue(objects, propertyId, defaultValue) {
+    if (!objects) {
+        return defaultValue;
+    }
+    return _dataViewObject__WEBPACK_IMPORTED_MODULE_0__/* .getValue */ ._(objects[propertyId.objectName], propertyId.propertyName, defaultValue);
+}
+/** Gets an object from objects. */
+function getObject(objects, objectName, defaultValue) {
+    if (objects && objects[objectName]) {
+        return objects[objectName];
+    }
+    return defaultValue;
+}
+/** Gets the solid color from a fill property. */
+function getFillColor(objects, propertyId, defaultColor) {
+    const value = getValue(objects, propertyId);
+    if (!value || !value.solid) {
+        return defaultColor;
+    }
+    return value.solid.color;
+}
+function getCommonValue(objects, propertyId, defaultValue) {
+    const value = getValue(objects, propertyId, defaultValue);
+    if (value && value.solid) {
+        return value.solid.color;
+    }
+    if (value === undefined
+        || value === null
+        || (typeof value === "object" && !value.solid)) {
+        return defaultValue;
+    }
+    return value;
+}
+//# sourceMappingURL=dataViewObjects.js.map
+
+/***/ }),
+
+/***/ 116:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   P: () => (/* binding */ DataViewObjectsParser)
+/* harmony export */ });
+/* harmony import */ var _dataViewObjects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(271);
+
+class DataViewObjectsParser {
+    static getDefault() {
+        return new this();
+    }
+    static createPropertyIdentifier(objectName, propertyName) {
+        return {
+            objectName,
+            propertyName
+        };
+    }
+    static parse(dataView) {
+        const dataViewObjectParser = this.getDefault();
+        if (!dataView || !dataView.metadata || !dataView.metadata.objects) {
+            return dataViewObjectParser;
+        }
+        const properties = dataViewObjectParser.getProperties();
+        for (const objectName in properties) {
+            for (const propertyName in properties[objectName]) {
+                const defaultValue = dataViewObjectParser[objectName][propertyName];
+                dataViewObjectParser[objectName][propertyName] = _dataViewObjects__WEBPACK_IMPORTED_MODULE_0__/* .getCommonValue */ .Bl(dataView.metadata.objects, properties[objectName][propertyName], defaultValue);
+            }
+        }
+        return dataViewObjectParser;
+    }
+    static isPropertyEnumerable(propertyName) {
+        return !DataViewObjectsParser.InnumerablePropertyPrefix.test(propertyName);
+    }
+    static enumerateObjectInstances(dataViewObjectParser, options) {
+        const dataViewProperties = dataViewObjectParser && dataViewObjectParser[options.objectName];
+        if (!dataViewProperties) {
+            return [];
+        }
+        const instance = {
+            objectName: options.objectName,
+            selector: null,
+            properties: {}
+        };
+        for (const key in dataViewProperties) {
+            if (Object.prototype.hasOwnProperty.call(dataViewProperties, key)) {
+                instance.properties[key] = dataViewProperties[key];
+            }
+        }
+        return {
+            instances: [instance]
+        };
+    }
+    getProperties() {
+        const properties = {}, objectNames = Object.keys(this);
+        objectNames.forEach((objectName) => {
+            if (DataViewObjectsParser.isPropertyEnumerable(objectName)) {
+                const propertyNames = Object.keys(this[objectName]);
+                properties[objectName] = {};
+                propertyNames.forEach((propertyName) => {
+                    if (DataViewObjectsParser.isPropertyEnumerable(objectName)) {
+                        properties[objectName][propertyName] =
+                            DataViewObjectsParser.createPropertyIdentifier(objectName, propertyName);
+                    }
+                });
+            }
+        });
+        return properties;
+    }
+}
+DataViewObjectsParser.InnumerablePropertyPrefix = /^_/;
+//# sourceMappingURL=dataViewObjectsParser.js.map
+
+/***/ }),
+
+/***/ 754:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Kx: () => (/* binding */ Model),
+/* harmony export */   Tn: () => (/* binding */ SimpleCard)
+/* harmony export */ });
+/* unused harmony exports CardGroupEntity, CompositeCard, Group, SimpleSlice, AlignmentGroup, ToggleSwitch, ColorPicker, NumUpDown, Slider, DatePicker, ItemDropdown, AutoDropdown, DurationPicker, ErrorRangeControl, FieldPicker, ItemFlagsSelection, AutoFlagsSelection, TextInput, TextArea, FontPicker, GradientBar, ImageUpload, ListEditor, ReadOnlyText, ShapeMapSelector, CompositeSlice, FontControl, MarginPadding, Container, ContainerItem */
+/* harmony import */ var _utils_FormattingSettingsUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(639);
+/**
+ * Powerbi utils components classes for custom visual formatting pane objects
+ *
+ */
+
+class NamedEntity {
+}
+class CardGroupEntity extends NamedEntity {
+}
+class Model {
+}
+/** CompositeCard is use to populate a card into the formatting pane with multiple groups */
+class CompositeCard extends (/* unused pure expression or super */ null && (NamedEntity)) {
+}
+class Group extends CardGroupEntity {
+    constructor(object) {
+        super();
+        Object.assign(this, object);
+    }
+}
+/** SimpleCard is use to populate a card into the formatting pane in a single group */
+class SimpleCard extends CardGroupEntity {
+}
+class SimpleSlice extends NamedEntity {
+    constructor(object) {
+        super();
+        Object.assign(this, object);
+    }
+    getFormattingSlice(objectName, localizationManager) {
+        const controlType = this.type;
+        const propertyName = this.name;
+        const sliceDisplayName = (localizationManager && this.displayNameKey) ? localizationManager.getDisplayName(this.displayNameKey) : this.displayName;
+        const sliceDescription = (localizationManager && this.descriptionKey) ? localizationManager.getDisplayName(this.descriptionKey) : this.description;
+        const componentDisplayName = {
+            displayName: sliceDisplayName,
+            description: sliceDescription,
+            uid: objectName + '-' + propertyName,
+        };
+        return Object.assign(Object.assign({}, componentDisplayName), { control: {
+                type: controlType,
+                properties: this.getFormattingComponent(objectName, localizationManager)
+            } });
+    }
+    getFormattingComponent(objectName, localizationManager) {
+        return {
+            descriptor: _utils_FormattingSettingsUtils__WEBPACK_IMPORTED_MODULE_0__/* .getDescriptor */ .y(objectName, this),
+            value: this.value,
+        };
+    }
+    getRevertToDefaultDescriptor(objectName) {
+        return [{
+                objectName: objectName,
+                propertyName: this.name
+            }];
+    }
+    setPropertiesValues(dataViewObjects, objectName) {
+        var _a;
+        let newValue = (_a = dataViewObjects === null || dataViewObjects === void 0 ? void 0 : dataViewObjects[objectName]) === null || _a === void 0 ? void 0 : _a[this.name];
+        this.value = _utils_FormattingSettingsUtils__WEBPACK_IMPORTED_MODULE_0__/* .getPropertyValue */ .D(this, newValue, this.value);
+    }
+}
+class AlignmentGroup extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "AlignmentGroup" /* visuals.FormattingComponent.AlignmentGroup */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { mode: this.mode, supportsNoSelection: this.supportsNoSelection });
+    }
+}
+class ToggleSwitch extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "ToggleSwitch" /* visuals.FormattingComponent.ToggleSwitch */;
+    }
+}
+class ColorPicker extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "ColorPicker" /* visuals.FormattingComponent.ColorPicker */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { defaultColor: this.defaultColor, isNoFillItemSupported: this.isNoFillItemSupported });
+    }
+}
+class NumUpDown extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "NumUpDown" /* visuals.FormattingComponent.NumUpDown */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { options: this.options });
+    }
+}
+class Slider extends NumUpDown {
+    constructor() {
+        super(...arguments);
+        this.type = "Slider" /* visuals.FormattingComponent.Slider */;
+    }
+}
+class DatePicker extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "DatePicker" /* visuals.FormattingComponent.DatePicker */;
+    }
+    getFormattingComponent(objectName, localizationManager) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { placeholder: (localizationManager && this.placeholderKey) ? localizationManager.getDisplayName(this.placeholderKey) : this.placeholder, validators: this.validators });
+    }
+}
+class ItemDropdown extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "Dropdown" /* visuals.FormattingComponent.Dropdown */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { items: this.items });
+    }
+}
+class AutoDropdown extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "Dropdown" /* visuals.FormattingComponent.Dropdown */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { mergeValues: this.mergeValues, filterValues: this.filterValues });
+    }
+}
+class DurationPicker extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "DurationPicker" /* visuals.FormattingComponent.DurationPicker */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { validators: this.validators });
+    }
+}
+class ErrorRangeControl extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "ErrorRangeControl" /* visuals.FormattingComponent.ErrorRangeControl */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { validators: this.validators });
+    }
+}
+class FieldPicker extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "FieldPicker" /* visuals.FormattingComponent.FieldPicker */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { validators: this.validators, allowMultipleValues: this.allowMultipleValues });
+    }
+}
+class ItemFlagsSelection extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "FlagsSelection" /* visuals.FormattingComponent.FlagsSelection */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { items: this.items });
+    }
+}
+class AutoFlagsSelection extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "FlagsSelection" /* visuals.FormattingComponent.FlagsSelection */;
+    }
+}
+class TextInput extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "TextInput" /* visuals.FormattingComponent.TextInput */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { placeholder: this.placeholder });
+    }
+}
+class TextArea extends TextInput {
+    constructor() {
+        super(...arguments);
+        this.type = "TextArea" /* visuals.FormattingComponent.TextArea */;
+    }
+}
+class FontPicker extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "FontPicker" /* visuals.FormattingComponent.FontPicker */;
+    }
+}
+class GradientBar extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "GradientBar" /* visuals.FormattingComponent.GradientBar */;
+    }
+}
+class ImageUpload extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "ImageUpload" /* visuals.FormattingComponent.ImageUpload */;
+    }
+}
+class ListEditor extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "ListEditor" /* visuals.FormattingComponent.ListEditor */;
+    }
+}
+class ReadOnlyText extends SimpleSlice {
+    constructor() {
+        super(...arguments);
+        this.type = "ReadOnlyText" /* visuals.FormattingComponent.ReadOnlyText */;
+    }
+}
+class ShapeMapSelector extends SimpleSlice {
+    constructor(object) {
+        super(object);
+        this.type = "ShapeMapSelector" /* visuals.FormattingComponent.ShapeMapSelector */;
+    }
+    getFormattingComponent(objectName) {
+        return Object.assign(Object.assign({}, super.getFormattingComponent(objectName)), { isAzMapReferenceSelector: this.isAzMapReferenceSelector });
+    }
+}
+class CompositeSlice extends NamedEntity {
+    constructor(object) {
+        super();
+        Object.assign(this, object);
+    }
+    getFormattingSlice(objectName, localizationManager) {
+        const controlType = this.type;
+        const propertyName = this.name;
+        const componentDisplayName = {
+            displayName: (localizationManager && this.displayNameKey) ? localizationManager.getDisplayName(this.displayNameKey) : this.displayName,
+            description: (localizationManager && this.descriptionKey) ? localizationManager.getDisplayName(this.descriptionKey) : this.description,
+            uid: objectName + '-' + propertyName,
+        };
+        return Object.assign(Object.assign({}, componentDisplayName), { control: {
+                type: controlType,
+                properties: this.getFormattingComponent(objectName)
+            } });
+    }
+}
+class FontControl extends CompositeSlice {
+    constructor(object) {
+        super(object);
+        this.type = "FontControl" /* visuals.FormattingComponent.FontControl */;
+    }
+    getFormattingComponent(objectName) {
+        var _a, _b, _c;
+        return {
+            fontFamily: this.fontFamily.getFormattingComponent(objectName),
+            fontSize: this.fontSize.getFormattingComponent(objectName),
+            bold: (_a = this.bold) === null || _a === void 0 ? void 0 : _a.getFormattingComponent(objectName),
+            italic: (_b = this.italic) === null || _b === void 0 ? void 0 : _b.getFormattingComponent(objectName),
+            underline: (_c = this.underline) === null || _c === void 0 ? void 0 : _c.getFormattingComponent(objectName)
+        };
+    }
+    getRevertToDefaultDescriptor(objectName) {
+        return this.fontFamily.getRevertToDefaultDescriptor(objectName)
+            .concat(this.fontSize.getRevertToDefaultDescriptor(objectName))
+            .concat(this.bold ? this.bold.getRevertToDefaultDescriptor(objectName) : [])
+            .concat(this.italic ? this.italic.getRevertToDefaultDescriptor(objectName) : [])
+            .concat(this.underline ? this.underline.getRevertToDefaultDescriptor(objectName) : []);
+    }
+    setPropertiesValues(dataViewObjects, objectName) {
+        var _a, _b, _c;
+        this.fontFamily.setPropertiesValues(dataViewObjects, objectName);
+        this.fontSize.setPropertiesValues(dataViewObjects, objectName);
+        (_a = this.bold) === null || _a === void 0 ? void 0 : _a.setPropertiesValues(dataViewObjects, objectName);
+        (_b = this.italic) === null || _b === void 0 ? void 0 : _b.setPropertiesValues(dataViewObjects, objectName);
+        (_c = this.underline) === null || _c === void 0 ? void 0 : _c.setPropertiesValues(dataViewObjects, objectName);
+    }
+}
+class MarginPadding extends CompositeSlice {
+    constructor(object) {
+        super(object);
+        this.type = "MarginPadding" /* visuals.FormattingComponent.MarginPadding */;
+    }
+    getFormattingComponent(objectName) {
+        return {
+            left: this.left.getFormattingComponent(objectName),
+            right: this.right.getFormattingComponent(objectName),
+            top: this.top.getFormattingComponent(objectName),
+            bottom: this.bottom.getFormattingComponent(objectName)
+        };
+    }
+    getRevertToDefaultDescriptor(objectName) {
+        return this.left.getRevertToDefaultDescriptor(objectName)
+            .concat(this.right.getRevertToDefaultDescriptor(objectName))
+            .concat(this.top.getRevertToDefaultDescriptor(objectName))
+            .concat(this.bottom.getRevertToDefaultDescriptor(objectName));
+    }
+    setPropertiesValues(dataViewObjects, objectName) {
+        this.left.setPropertiesValues(dataViewObjects, objectName);
+        this.right.setPropertiesValues(dataViewObjects, objectName);
+        this.top.setPropertiesValues(dataViewObjects, objectName);
+        this.bottom.setPropertiesValues(dataViewObjects, objectName);
+    }
+}
+class Container extends NamedEntity {
+    constructor(object) {
+        super();
+        Object.assign(this, object);
+    }
+}
+class ContainerItem extends (/* unused pure expression or super */ null && (NamedEntity)) {
+}
+//# sourceMappingURL=FormattingSettingsComponents.js.map
+
+/***/ }),
+
+/***/ 667:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* unused harmony export FormattingSettingsService */
+/* harmony import */ var _FormattingSettingsComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(754);
+
+class FormattingSettingsService {
+    constructor(localizationManager) {
+        this.localizationManager = localizationManager;
+    }
+    /**
+     * Build visual formatting settings model from metadata dataView
+     *
+     * @param dataViews metadata dataView object
+     * @returns visual formatting settings model
+     */
+    populateFormattingSettingsModel(typeClass, dataView) {
+        var _a, _b;
+        let defaultSettings = new typeClass();
+        let dataViewObjects = (_a = dataView === null || dataView === void 0 ? void 0 : dataView.metadata) === null || _a === void 0 ? void 0 : _a.objects;
+        if (dataViewObjects) {
+            // loop over each formatting property and set its new value if exists
+            (_b = defaultSettings.cards) === null || _b === void 0 ? void 0 : _b.forEach((card) => {
+                var _a;
+                if (card instanceof CompositeCard)
+                    (_a = card.topLevelSlice) === null || _a === void 0 ? void 0 : _a.setPropertiesValues(dataViewObjects, card.name);
+                const cardGroupInstances = (card instanceof SimpleCard ? [card] : card.groups);
+                cardGroupInstances.forEach((cardGroupInstance) => {
+                    var _a, _b, _c, _d;
+                    // Set current top level toggle value
+                    (_a = cardGroupInstance.topLevelSlice) === null || _a === void 0 ? void 0 : _a.setPropertiesValues(dataViewObjects, card.name);
+                    (_b = cardGroupInstance === null || cardGroupInstance === void 0 ? void 0 : cardGroupInstance.slices) === null || _b === void 0 ? void 0 : _b.forEach((slice) => {
+                        slice === null || slice === void 0 ? void 0 : slice.setPropertiesValues(dataViewObjects, card.name);
+                    });
+                    (_d = (_c = cardGroupInstance === null || cardGroupInstance === void 0 ? void 0 : cardGroupInstance.container) === null || _c === void 0 ? void 0 : _c.containerItems) === null || _d === void 0 ? void 0 : _d.forEach((containerItem) => {
+                        var _a;
+                        (_a = containerItem === null || containerItem === void 0 ? void 0 : containerItem.slices) === null || _a === void 0 ? void 0 : _a.forEach((slice) => {
+                            slice === null || slice === void 0 ? void 0 : slice.setPropertiesValues(dataViewObjects, card.name);
+                        });
+                    });
+                });
+            });
+        }
+        return defaultSettings;
+    }
+    /**
+     * Build formatting model by parsing formatting settings model object
+     *
+     * @returns powerbi visual formatting model
+     */
+    buildFormattingModel(formattingSettingsModel) {
+        let formattingModel = {
+            cards: []
+        };
+        formattingSettingsModel.cards
+            .filter(({ visible = true }) => visible)
+            .forEach((card) => {
+            var _a;
+            let formattingCard = {
+                displayName: (this.localizationManager && card.displayNameKey) ? this.localizationManager.getDisplayName(card.displayNameKey) : card.displayName,
+                description: (this.localizationManager && card.descriptionKey) ? this.localizationManager.getDisplayName(card.descriptionKey) : card.description,
+                groups: [],
+                uid: card.name + "-card",
+                analyticsPane: card.analyticsPane,
+            };
+            const objectName = card.name;
+            if (card.topLevelSlice) {
+                let topLevelToggleSlice = card.topLevelSlice.getFormattingSlice(objectName, this.localizationManager);
+                topLevelToggleSlice.suppressDisplayName = true;
+                formattingCard.topLevelToggle = topLevelToggleSlice;
+            }
+            (_a = card.onPreProcess) === null || _a === void 0 ? void 0 : _a.call(card);
+            const isSimpleCard = card instanceof SimpleCard;
+            const cardGroupInstances = (isSimpleCard ?
+                [card].filter(({ visible = true }) => visible) :
+                card.groups.filter(({ visible = true }) => visible));
+            cardGroupInstances
+                .forEach((cardGroupInstance) => {
+                const groupUid = cardGroupInstance.name + "-group";
+                // Build formatting group for each group
+                const formattingGroup = {
+                    displayName: isSimpleCard ? undefined : (this.localizationManager && cardGroupInstance.displayNameKey)
+                        ? this.localizationManager.getDisplayName(cardGroupInstance.displayNameKey) : cardGroupInstance.displayName,
+                    description: isSimpleCard ? undefined : (this.localizationManager && cardGroupInstance.descriptionKey)
+                        ? this.localizationManager.getDisplayName(cardGroupInstance.descriptionKey) : cardGroupInstance.description,
+                    slices: [],
+                    uid: groupUid,
+                    collapsible: cardGroupInstance.collapsible,
+                    delaySaveSlices: cardGroupInstance.delaySaveSlices,
+                    disabled: cardGroupInstance.disabled,
+                    disabledReason: cardGroupInstance.disabledReason,
+                };
+                formattingCard.groups.push(formattingGroup);
+                // In case formatting model adds data points or top categories (Like when you modify specific visual category color).
+                // these categories use same object name and property name from capabilities and the generated uid will be the same for these formatting categories properties
+                // Solution => Save slice names to modify each slice uid to be unique by adding counter value to the new slice uid
+                const sliceNames = {};
+                // Build formatting container slice for each property
+                if (cardGroupInstance.container) {
+                    const container = cardGroupInstance.container;
+                    const containerUid = groupUid + "-container";
+                    const formattingContainer = {
+                        displayName: (this.localizationManager && container.displayNameKey)
+                            ? this.localizationManager.getDisplayName(container.displayNameKey) : container.displayName,
+                        description: (this.localizationManager && container.descriptionKey)
+                            ? this.localizationManager.getDisplayName(container.descriptionKey) : container.description,
+                        containerItems: [],
+                        uid: containerUid
+                    };
+                    container.containerItems.forEach((containerItem) => {
+                        // Build formatting container item object
+                        const containerIemName = containerItem.displayNameKey ? containerItem.displayNameKey : containerItem.displayName;
+                        const containerItemUid = containerUid + containerIemName;
+                        let formattingContainerItem = {
+                            displayName: (this.localizationManager && containerItem.displayNameKey)
+                                ? this.localizationManager.getDisplayName(containerItem.displayNameKey) : containerItem.displayName,
+                            slices: [],
+                            uid: containerItemUid
+                        };
+                        // Build formatting slices and add them to current formatting container item
+                        this.buildFormattingSlices({ slices: containerItem.slices, objectName, sliceNames, formattingSlices: formattingContainerItem.slices });
+                        formattingContainer.containerItems.push(formattingContainerItem);
+                    });
+                    formattingGroup.container = formattingContainer;
+                }
+                if (cardGroupInstance.slices) {
+                    if (cardGroupInstance.topLevelSlice) {
+                        let topLevelToggleSlice = cardGroupInstance.topLevelSlice.getFormattingSlice(objectName, this.localizationManager);
+                        topLevelToggleSlice.suppressDisplayName = true;
+                        (formattingGroup.displayName == undefined ? formattingCard : formattingGroup).topLevelToggle = topLevelToggleSlice;
+                    }
+                    // Build formatting slice for each property
+                    this.buildFormattingSlices({ slices: cardGroupInstance.slices, objectName, sliceNames, formattingSlices: formattingGroup.slices });
+                }
+            });
+            formattingCard.revertToDefaultDescriptors = this.getRevertToDefaultDescriptor(card);
+            formattingModel.cards.push(formattingCard);
+        });
+        return formattingModel;
+    }
+    buildFormattingSlices({ slices, objectName, sliceNames, formattingSlices }) {
+        // Filter slices based on their visibility
+        slices === null || slices === void 0 ? void 0 : slices.filter(({ visible = true }) => visible).forEach((slice) => {
+            let formattingSlice = slice === null || slice === void 0 ? void 0 : slice.getFormattingSlice(objectName, this.localizationManager);
+            if (formattingSlice) {
+                // Modify formatting slice uid if needed
+                if (sliceNames[slice.name] === undefined) {
+                    sliceNames[slice.name] = 0;
+                }
+                else {
+                    sliceNames[slice.name]++;
+                    formattingSlice.uid = `${formattingSlice.uid}-${sliceNames[slice.name]}`;
+                }
+                formattingSlices.push(formattingSlice);
+            }
+        });
+    }
+    getRevertToDefaultDescriptor(card) {
+        var _a;
+        // Proceeded slice names are saved to prevent duplicated default descriptors in case of using 
+        // formatting categories & selectors, since they have the same descriptor objectName and propertyName
+        const sliceNames = {};
+        let revertToDefaultDescriptors = [];
+        let cardSlicesDefaultDescriptors;
+        let cardContainerSlicesDefaultDescriptors = [];
+        if (card instanceof CompositeCard && card.topLevelSlice)
+            revertToDefaultDescriptors.push(...(_a = card.topLevelSlice) === null || _a === void 0 ? void 0 : _a.getRevertToDefaultDescriptor(card.name));
+        const cardGroupInstances = (card instanceof SimpleCard ?
+            [card].filter(({ visible = true }) => visible) :
+            card.groups.filter(({ visible = true }) => visible));
+        cardGroupInstances.forEach((cardGroupInstance) => {
+            var _a, _b;
+            cardSlicesDefaultDescriptors = this.getSlicesRevertToDefaultDescriptor(card.name, cardGroupInstance.slices, sliceNames, cardGroupInstance.topLevelSlice);
+            (_b = (_a = cardGroupInstance.container) === null || _a === void 0 ? void 0 : _a.containerItems) === null || _b === void 0 ? void 0 : _b.forEach((containerItem) => {
+                cardContainerSlicesDefaultDescriptors = cardContainerSlicesDefaultDescriptors.concat(this.getSlicesRevertToDefaultDescriptor(card.name, containerItem.slices, sliceNames));
+            });
+            revertToDefaultDescriptors.push(...cardSlicesDefaultDescriptors.concat(cardContainerSlicesDefaultDescriptors));
+        });
+        return revertToDefaultDescriptors;
+    }
+    getSlicesRevertToDefaultDescriptor(cardName, slices, sliceNames, topLevelSlice) {
+        let revertToDefaultDescriptors = [];
+        if (topLevelSlice) {
+            sliceNames[topLevelSlice.name] = true;
+            revertToDefaultDescriptors = revertToDefaultDescriptors.concat(topLevelSlice.getRevertToDefaultDescriptor(cardName));
+        }
+        slices === null || slices === void 0 ? void 0 : slices.forEach((slice) => {
+            if (slice && !sliceNames[slice.name]) {
+                sliceNames[slice.name] = true;
+                revertToDefaultDescriptors = revertToDefaultDescriptors.concat(slice.getRevertToDefaultDescriptor(cardName));
+            }
+        });
+        return revertToDefaultDescriptors;
+    }
+}
+/* unused harmony default export */ var __WEBPACK_DEFAULT_EXPORT__ = ((/* unused pure expression or super */ null && (FormattingSettingsService)));
+//# sourceMappingURL=FormattingSettingsService.js.map
+
+/***/ }),
+
+/***/ 674:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   z: () => (/* reexport module object */ _FormattingSettingsComponents__WEBPACK_IMPORTED_MODULE_0__)
+/* harmony export */ });
+/* harmony import */ var _FormattingSettingsComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(754);
+/* harmony import */ var _FormattingSettingsService__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(667);
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ 639:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   D: () => (/* binding */ getPropertyValue),
+/* harmony export */   y: () => (/* binding */ getDescriptor)
+/* harmony export */ });
+/**
+ * Build and return formatting descriptor for simple slice
+ *
+ * @param objectName Object name from capabilities
+ * @param slice formatting simple slice
+ * @returns simple slice formatting descriptor
+ */
+function getDescriptor(objectName, slice) {
+    return {
+        objectName: objectName,
+        propertyName: slice.name,
+        selector: slice.selector,
+        altConstantValueSelector: slice.altConstantSelector,
+        instanceKind: slice.instanceKind
+    };
+}
+/**
+ * Get property value from dataview objects if exists
+ * Else return the default value from formatting settings object
+ *
+ * @param value dataview object value
+ * @param defaultValue formatting settings default value
+ * @returns formatting property value
+ */
+function getPropertyValue(slice, value, defaultValue) {
+    if (value == null || (typeof value === "object" && !value.solid)) {
+        return defaultValue;
+    }
+    if (value.solid) {
+        return { value: value === null || value === void 0 ? void 0 : value.solid.color };
+    }
+    if (slice === null || slice === void 0 ? void 0 : slice.items) {
+        let itemsArray = slice.items;
+        return itemsArray.find(item => item.value == value);
+    }
+    return value;
+}
+//# sourceMappingURL=FormattingSettingsUtils.js.map
 
 /***/ }),
 

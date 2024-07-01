@@ -26,4 +26,43 @@
   .table-container tr:hover {
     background-color: #ddd;
   }
+
+  .container {
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #0078d4;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background-color: #005a9e;
+}
+
+select {
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  margin-left: 10px; /* Ensure proper spacing around the select dropdown */
+}
+
+
+select:focus {
+    border-color: #0078d4;
+    outline: none;
+}
+
   

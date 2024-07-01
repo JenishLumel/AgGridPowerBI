@@ -6,6 +6,7 @@ import './styles.css';
 interface TableVisualProps {
     data: any[];
     columnDefs: ColDef[];
+    onRowClick: any;
 }
 declare const TableVisual: React.FC<TableVisualProps>;
 export default TableVisual;

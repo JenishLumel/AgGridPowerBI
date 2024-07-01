@@ -5,7 +5,16 @@ import IVisual = powerbi.extensibility.visual.IVisual;
 import "./../style/visual.less";
 export declare class Visual implements IVisual {
     private target;
+    private settings;
+    private theme;
+    private scale;
+    private format;
+    private rowData;
+    private columnData;
+    private host;
+    private selectionManager;
     constructor(options: VisualConstructorOptions);
     update(options: VisualUpdateOptions): void;
-    private transformData;
+    private onChangeThemeButtonClick;
+    getFormattingModel(): any;
 }

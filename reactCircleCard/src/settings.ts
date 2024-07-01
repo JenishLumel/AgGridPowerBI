@@ -26,7 +26,7 @@
 
 "use strict";
 
-
+import { dataViewObjectsParser } from "powerbi-visuals-utils-dataviewutils";
 
 import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
 
@@ -82,4 +82,14 @@ export class VisualFormattingSettingsModel extends FormattingSettingsModel {
     dataPointCard = new DataPointCardSettings();
 
     cards = [this.dataPointCard];
+}
+
+export class VisualSettings extends dataViewObjectsParser.DataViewObjectsParser {
+    public settings: Settings = new Settings();
+}
+
+export class Settings {
+    public theme: string = "alpine";
+    public scale: string = "thousands";
+    public format: string = "none";
 }

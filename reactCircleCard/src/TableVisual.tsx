@@ -11,9 +11,10 @@ import './styles.css';
 interface TableVisualProps {
     data: any[];
     columnDefs: ColDef[];
+    onRowClick : any;
 }
 
-const TableVisual: React.FC<TableVisualProps> = ({ data, columnDefs }) => {
+const TableVisual: React.FC<TableVisualProps> = ({ data, columnDefs,onRowClick }) => {
     console.log("hi")
     console.log(columnDefs);
     console.log(data);
@@ -49,8 +50,8 @@ const TableVisual: React.FC<TableVisualProps> = ({ data, columnDefs }) => {
           </tr>
         </thead>
         <tbody>
-          {data.map(item => (
-            <tr key={item.id}>
+          {data.map((item,index) => (
+            <tr key={item.id} onClick={() => onRowClick(index)}>
               <td>{item[fieldName]}</td>
             
             </tr>

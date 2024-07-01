@@ -2,32 +2,79 @@
     
     "dataRoles": [
       {
-        "name": "values",
-        "kind": "Grouping",
-        "displayName": "Values"
-      }
+        "displayName": "Column",
+        "name": "column",
+        "kind": "Grouping"
+    },
+    {
+        "displayName": "Value",
+        "name": "value",
+        "kind": "Measure"
+    }
+     
     ],
     "dataViewMappings": [
       {
-        "table": {
-          "rows": {
-            "select": [
-              { "for": { "in": "values" } }
-            ]
+          "table": {
+              "rows": {
+                  "select": [
+                      {
+                          "for": {
+                              "in": "column"
+                          }
+                      },
+                      {
+                          "for": {
+                              "in": "value"
+                          }
+                      }
+                  ]
+              }
           }
-        }
       }
-    ],
+  ],
     "objects": {
-      "general": {
-        "displayName": "General",
-        "properties": {
-          "fill": {
-            "displayName": "Fill",
-            "type": { "fill": { "solid": { "color": true } } }
-          }
+        "settings": {
+            "displayName": "Settings",
+            "properties": {
+                "theme": {
+                    "displayName": "Theme",
+                    "type": {
+                        "enumeration": [
+                            {"value": "ag-theme-alpine", "displayName": "Alpine"},
+                            {"value": "ag-theme-balham", "displayName": "Balham"},
+                            {"value": "ag-theme-material", "displayName": "Material"}
+                        ]
+                    }
+                },
+                "scale": {
+                    "displayName": "scale",
+                    "type": {
+                        "enumeration": [
+                            {"value": "none", "displayName": "none"},
+                            {"value": "thousands", "displayName": "thousands"},
+                            {"value": "millions", "displayName": "millions"},
+                            {"value": "billion", "displayName": "billions"}
+
+                        ]
+                    }
+                },
+                "format": {
+                    "displayName": "Format",
+                    "type": {
+                        "enumeration": [
+                            {"value": "currency", "displayName": "currency"},
+                            {"value": "percentage", "displayName": "percentage"},
+                            {"value": "deciml", "displayName": "decimal"}
+                            
+
+                        ]
+                    }
+                }
+
+
+            }
         }
-      }
     },
     "privileges" : []
   }
