@@ -121,10 +121,7 @@ const TableVisual2 = ({ data, columnDefs, themeBack, scale }) => {
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "millions" }, "Millions"),
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "billions" }, "Billions")),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", { onChange: (e) => setFormat(e.target.value), value: formatt },
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "none" }, "None"),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "currency" }, "Currency"),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "percentage" }, "Percentage"),
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "decimal" }, "Decimal")),
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "Format" }, "None")),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: `ag-theme-${theme}`, style: { height: "100%", width: "100%" } },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement(ag_grid_react__WEBPACK_IMPORTED_MODULE_1__/* .AgGridReact */ .W6, { rowData: rowData, columnDefs: column, animateRows: true }))));
 };

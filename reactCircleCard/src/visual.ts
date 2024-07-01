@@ -23,6 +23,7 @@ import FormattingSettingsModel = formattingSettings.Model;
 
 
 
+
 export class Visual implements IVisual {
     private target: HTMLElement;
     private settings: any;
@@ -43,7 +44,7 @@ export class Visual implements IVisual {
         this.scale = this.settings.settings.scale;
         this.format = this.settings.settings.scale;
         // this.selectionManager=this.host.createSelectionManager();
-
+    
         Component(options.element)
         
     }

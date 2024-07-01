@@ -69,10 +69,8 @@ const TableVisual2: React.FC<TableVisualProps> = ({ data, columnDefs,themeBack,s
                     <option value="billions">Billions</option>
                 </select>
                 <select onChange={(e) => setFormat(e.target.value)} value={formatt}>
-                    <option value="none">None</option>
-                    <option value="currency">Currency</option>
-                    <option value="percentage">Percentage</option>
-                    <option value="decimal">Decimal</option>
+                    <option value="Format">None</option>
+            
                 </select>
         <div className={`ag-theme-${theme}`} style={{ height: "100%", width: "100%" }}>
             <AgGridReact
