@@ -43,7 +43,10 @@ export class Visual implements IVisual {
         this.theme = this.settings.settings.theme;
         this.scale = this.settings.settings.scale;
         this.format = this.settings.settings.scale;
-        // this.selectionManager=this.host.createSelectionManager();
+
+        this.host=options.host
+        
+        this.selectionManager= this.host.createSelectionManager();
     
         Component(options.element)
         

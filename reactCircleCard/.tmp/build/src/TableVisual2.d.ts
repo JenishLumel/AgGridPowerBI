@@ -10,6 +10,7 @@ interface TableVisualProps {
     columnDefs: ColDef[];
     themeBack: string;
     scale: string;
+    onRowClick: any;
 }
 declare const TableVisual2: React.FC<TableVisualProps>;
 export default TableVisual2;

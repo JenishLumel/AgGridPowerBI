@@ -59,7 +59,7 @@ const Component = (element) => {
 
 const Component3 = (element, tableData, columnDefs, themeVisual, scale, onRowClick) => {
     // ReactDOM.render(<TableVisual data={tableData} columnDefs={columnDefs}  onRowClick={onRowClick}/>, element);
-    react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TableVisual2__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A, { themeBack: themeVisual, data: tableData, columnDefs: columnDefs, scale: scale }), element);
+    react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__.createElement(_TableVisual2__WEBPACK_IMPORTED_MODULE_2__/* ["default"] */ .A, { themeBack: themeVisual, data: tableData, columnDefs: columnDefs, scale: scale, onRowClick: onRowClick }), element);
 };
 
 
@@ -83,7 +83,7 @@ const Component3 = (element, tableData, columnDefs, themeVisual, scale, onRowCli
 
 
 
-const TableVisual2 = ({ data, columnDefs, themeBack, scale }) => {
+const TableVisual2 = ({ data, columnDefs, themeBack, scale, onRowClick }) => {
     const format = "currency";
     const [column, setColumn] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(columnDefs);
     const [rowData, setRowData] = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(data);
@@ -123,7 +123,7 @@ const TableVisual2 = ({ data, columnDefs, themeBack, scale }) => {
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("select", { onChange: (e) => setFormat(e.target.value), value: formatt },
             react__WEBPACK_IMPORTED_MODULE_0__.createElement("option", { value: "Format" }, "None")),
         react__WEBPACK_IMPORTED_MODULE_0__.createElement("div", { className: `ag-theme-${theme}`, style: { height: "100%", width: "100%" } },
-            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ag_grid_react__WEBPACK_IMPORTED_MODULE_1__/* .AgGridReact */ .W6, { rowData: rowData, columnDefs: column, animateRows: true }))));
+            react__WEBPACK_IMPORTED_MODULE_0__.createElement(ag_grid_react__WEBPACK_IMPORTED_MODULE_1__/* .AgGridReact */ .W6, { rowData: rowData, columnDefs: column, animateRows: true, onRowClicked: (event) => onRowClick(event.rowIndex) }))));
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (TableVisual2);
 
@@ -253,7 +253,8 @@ class Visual {
         this.theme = this.settings.settings.theme;
         this.scale = this.settings.settings.scale;
         this.format = this.settings.settings.scale;
-        // this.selectionManager=this.host.createSelectionManager();
+        this.host = options.host;
+        this.selectionManager = this.host.createSelectionManager();
         (0,_Component__WEBPACK_IMPORTED_MODULE_0__/* .Component */ .u)(options.element);
     }
     update(options) {

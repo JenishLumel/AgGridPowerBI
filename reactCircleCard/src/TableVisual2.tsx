@@ -15,9 +15,10 @@ interface TableVisualProps {
     columnDefs: ColDef[];
     themeBack:string;
     scale:string
+    onRowClick:any
 }
 
-const TableVisual2: React.FC<TableVisualProps> = ({ data, columnDefs,themeBack,scale }) => {
+const TableVisual2: React.FC<TableVisualProps> = ({ data, columnDefs,themeBack,scale,onRowClick }) => {
     const format="currency"
     const [column , setColumn] = useState<ColDef[]>(columnDefs);
     const [rowData , setRowData] = useState(data); 
@@ -77,6 +78,7 @@ const TableVisual2: React.FC<TableVisualProps> = ({ data, columnDefs,themeBack,s
                 rowData={rowData}
                 columnDefs={column}
                 animateRows={true}
+                onRowClicked={(event) => onRowClick(event.rowIndex)}
             />
         </div>
         </>
